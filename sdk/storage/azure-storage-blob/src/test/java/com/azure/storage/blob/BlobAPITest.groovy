@@ -69,11 +69,17 @@ class BlobAPITest extends APISpec {
     }
 
     def "Upload input stream overwrite fails"() {
+        setup:
+        System.setProperty("AZURE_LOG_LEVEL", "INFO")
+
         when:
         bc.upload(defaultInputStream.get(), defaultDataSize)
 
         then:
         thrown(BlobStorageException)
+
+        cleanup:
+        System.clearProperty("AZURE_LOG_LEVEL")
     }
 
     def "Upload input stream overwrite"() {
